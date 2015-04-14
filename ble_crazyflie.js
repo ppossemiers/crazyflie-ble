@@ -15,7 +15,7 @@ function CrazyFlie(callback) {
   		if(state === 'poweredOn') {
    		 	noble.startScanning();
   		} else {
-    		noble.stopScanning();
+    			noble.stopScanning();
   		}
 	});
 
@@ -24,7 +24,6 @@ function CrazyFlie(callback) {
     		noble.stopScanning();
     		cf.peripheral = peripheral;
     		console.log('Crazyflie with UUID ' + peripheral.uuid + ' found');
-    		//console.log('RSSI : ' + peripheral.rssi);
 
     		cf.peripheral.on('disconnect', function() { process.exit(0); });
   			
@@ -42,7 +41,7 @@ function CrazyFlie(callback) {
   						cf.service = services[0];
   						cf.service.discoverCharacteristics(characteristic_uuid, function(error, characteristics) {						
   							cf.characteristic = characteristics[0];
-          					cf.callback();
+          						cf.callback();
   						});
   					});
   				}
@@ -52,8 +51,8 @@ function CrazyFlie(callback) {
 	
 	this.call_scripts = function() {
 		for(i = 0; i < cf.scripts.length; i++) {
-        	this.scripts[i].call(this);
-        }
+        		this.scripts[i].call(this);
+        	}
 	}
 	
 	this.send_setpoint = function(roll, pitch, yaw, thrust) {
@@ -73,10 +72,9 @@ function CrazyFlie(callback) {
 }
 
 var cf = new CrazyFlie(main);
-//cf.scripts.push(hover);
 
 function main() {
-	// simpel hover
+	// simple hover
 	cf.send_setpoint(0, 0, 0, 0);
 	for(i = 0; i < 2; i++) {
 		cf.send_setpoint(0, 0, 0, 39000);
