@@ -33,3 +33,9 @@ Require the module and create a Crazyflie instance passing in a callback functio
 	});
 
 The callback function should follow the (err, obj) argument structure, passing in any errors that occur or an instance of a Crazyflie connection on success.
+
+## Examples
+
+### Hover [untested]
+
+To run the hover example run `node examples/hover.js` from within the root directory of the package
