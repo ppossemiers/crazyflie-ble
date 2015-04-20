@@ -12,6 +12,10 @@ This repo is a fork off of the project that [ppossemiers](https://github.com/ppo
 Download the zip or clone the GitHub repo into the 'node-modules' folder of your project
 
 `git clone https://github.com/jordankid93/BLECrazyflie_NodeJS.git`
+
+### Install
+Run `npm install` from within the directory to grab any needed dependencies
+
 ### Require
 Require the module and create a Crazyflie instance passing in a callback function.
 
@@ -29,10 +33,3 @@ Require the module and create a Crazyflie instance passing in a callback functio
 	});
 
 The callback function should follow the (err, obj) argument structure, passing in any errors that occur or an instance of a Crazyflie connection on success.
-
-## Dependencies:
-* [Node.js](https://nodejs.org) `brew install node`
-	* [NPM](https://www.npmjs.com) (included with Node.js)
-* [Xcode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12) (Mac App Store)
-* [noble](https://github.com/sandeepmistry/noble) `npm install noble`
-* [bufferpack](https://github.com/ryanrolds/bufferpack) `npm install bufferpack`

@@ -10,7 +10,7 @@ var hover = function(err, cf) {
 	cf.setThrust(40000); // Adjust as needed
 	console.log("Thrust now set to: " + cf.thrust);
 
-	cf.start();
+	cf.start(true);
 	console.log("Crazyflie now starting...");
 
 	setTimeout(function(){

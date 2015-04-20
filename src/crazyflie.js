@@ -4,9 +4,23 @@ var bufferpack = require('bufferpack');
 function Crazyflie(callback) {
 // Callback = function(error, crazyflie){ ... };
 
+	////////////////////////
+	// CONSTANTS
+	////////////////////////
 	var SERVICE_UUID = ['000002011c7f4f9e947b43b7c00a9a08'];
 	var CHARACTERISTIC_UUID = ['000002021c7f4f9e947b43b7c00a9a08'];
 
+	var START_INTERVAL_TIME = 1000;
+	var STOP_INTERVAL_TIME = 500;
+
+	var THRUST_MIN = 10000;
+	var THRUST_MAX = 60000;
+
+
+
+	////////////////////////
+	// Flying Components
+	////////////////////////
 	this.connected = false;
 	this.peripheral = '';
 	this.service = '';
@@ -32,8 +46,6 @@ function Crazyflie(callback) {
 
 	this.startInterval;
 	this.stopInterval;
-	this.START_INTERVAL_TIME = 1000;
-	this.STOP_INTERVAL_TIME = 500;
 
 
 
@@ -114,16 +126,20 @@ function Crazyflie(callback) {
 	/*
 	Function: 	Start
 
-	Params: 	None
+	Params: 	Hover - Bool
 
 	Returns: 	None
 
 	Description:
 				Sets a repeating interval to send the stored
-				movement components to the CrazyFlie.
+				movement components to the CrazyFlie. Also sets
+				crazyflie to hover mode if hover arg is true
 	*/
-	this.start = function(){
+	this.start = function(hover){
 		clearInterval(stopInterval);
+
+		if (hover) this.sendParam(11, 'b', 1); // Will need to be more flexible as firmware changes
+		
 		startInterval = setInterval(function(){
 			this.sendAll(this.roll, this.pitch, this.yaw, this.thrust);
 		}, START_INTERVAL_TIME);
@@ -143,8 +159,8 @@ function Crazyflie(callback) {
 	*/
 	this.stop = function(){
 		stopInterval = setInterval(function(){
-			this.thrust -= 1000;
-			if (thrust <= 5000) {
+			this.thrust -= 1000; // Can adjust as needed for smoother decend
+			if (thrust <= THRUST_MIN) {
 				thrust = 0;
 				clearInterval(this.startInterval);
 				clearInterval(this.stopInterval);
@@ -217,7 +233,7 @@ function Crazyflie(callback) {
 	};
 
 	/*
-	Function: 	Send All
+	Function: 	Send All (Previously "Set Point")
 
 	Params: 	Roll - Number
 				Pitch - Number
@@ -262,9 +278,9 @@ function Crazyflie(callback) {
 	/*
 	Function: 	Send Parameter
 
-	Params: 	Indent - ...
-				Type - ...
-				Value - ...
+	Params: 	Indent - Number
+				Type - String
+				Value - Number
 
 	Returns: 	None
 
