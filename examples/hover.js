@@ -7,7 +7,7 @@ var hover = function(err, cf) {
 		process.exit(0);
 	}
 
-	cf.setThrust(40000); // Adjust as needed
+	cf.setThrust(60000); // Adjust as needed
 	console.log("Thrust now set to: " + cf.thrust);
 
 	cf.start(true);

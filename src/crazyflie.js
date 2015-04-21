@@ -4,14 +4,16 @@ var bufferpack = require('bufferpack');
 function Crazyflie(callback) {
 // Callback = function(error, crazyflie){ ... };
 
+	var _this = this;
+
 	////////////////////////
 	// CONSTANTS
 	////////////////////////
 	var SERVICE_UUID = ['000002011c7f4f9e947b43b7c00a9a08'];
 	var CHARACTERISTIC_UUID = ['000002021c7f4f9e947b43b7c00a9a08'];
 
-	var START_INTERVAL_TIME = 1000;
-	var STOP_INTERVAL_TIME = 500;
+	var START_INTERVAL_TIME = 100;
+	var STOP_INTERVAL_TIME = 100;
 
 	var THRUST_MIN = 10000;
 	var THRUST_MAX = 60000;
@@ -87,27 +89,27 @@ function Crazyflie(callback) {
 	noble.on('discover', function(peripheral) {
 		if(peripheral.advertisement.localName === 'Crazyflie'){
 			noble.stopScanning();
-			this.peripheral = peripheral;
+			_this.peripheral = peripheral;
 			console.log('Crazyflie with UUID ' + peripheral.uuid + ' found');
 
-			this.peripheral.on('disconnect', function() { process.exit(0); });
+			_this.peripheral.on('disconnect', function() { process.exit(0); });
 
-			this.peripheral.on('rssiUpdate', function() { console.log(peripheral.rssi); });
+			_this.peripheral.on('rssiUpdate', function() { console.log(peripheral.rssi); });
 
-			this.peripheral.connect(function(error) {
+			_this.peripheral.connect(function(error) {
 				if(error) {
 					console.log(error);
-					return this.callback(error, null);
+					return _this.callback(error, null);
 					// process.exit(0); // Allows users to handle failed connection
 				}
 				else {
-					this.connected = true;
+					_this.connected = true;
 					console.log('Connected to Crazyflie');
-					this.peripheral.discoverServices(SERVICE_UUID, function(error, services) {
-						this.service = services[0];
-						this.service.discoverCharacteristics(CHARACTERISTIC_UUID, function(error, characteristics) {
-							this.characteristic = characteristics[0];
-								this.callback(null, this);
+					_this.peripheral.discoverServices(SERVICE_UUID, function(error, services) {
+						_this.service = services[0];
+						_this.service.discoverCharacteristics(CHARACTERISTIC_UUID, function(error, characteristics) {
+							_this.characteristic = characteristics[0];
+								_this.callback(null, _this);
 						});
 					});
 				}
@@ -136,12 +138,14 @@ function Crazyflie(callback) {
 				crazyflie to hover mode if hover arg is true
 	*/
 	this.start = function(hover){
-		clearInterval(stopInterval);
+		if (this.stopInterval) clearInterval(this.stopInterval);
+
+		_this.sendAll(_this.roll, _this.pitch, _this.yaw, _this.thrust);
 
 		if (hover) this.sendParam(11, 'b', 1); // Will need to be more flexible as firmware changes
-		
-		startInterval = setInterval(function(){
-			this.sendAll(this.roll, this.pitch, this.yaw, this.thrust);
+
+		this.startInterval = setInterval(function(){
+			_this.sendAll(_this.roll, _this.pitch, _this.yaw, _this.thrust);
 		}, START_INTERVAL_TIME);
 	};
 
@@ -158,12 +162,12 @@ function Crazyflie(callback) {
 				number, it is set to zero and the start interval is cleared.
 	*/
 	this.stop = function(){
-		stopInterval = setInterval(function(){
-			this.thrust -= 1000; // Can adjust as needed for smoother decend
-			if (thrust <= THRUST_MIN) {
-				thrust = 0;
-				clearInterval(this.startInterval);
-				clearInterval(this.stopInterval);
+		this.stopInterval = setInterval(function(){
+			_this.thrust -= 1000; // Can adjust as needed for smoother decend
+			if (_this.thrust <= THRUST_MIN) {
+				_this.thrust = 0;
+				if (_this.startInterval) clearInterval(_this.startInterval);
+				clearInterval(_this.stopInterval);
 			}
 		}, STOP_INTERVAL_TIME);
 	};
