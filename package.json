@@ -1,0 +1,28 @@
+{
+  "name": "crazyflie-ble",
+  "version": "0.2.0",
+  "description": "Module of BLE Node.js Implementation to communicate with Crazyflie",
+  "main": "ble_crazyflie.js",
+  "scripts": {
+    "start": "node ./src/index.js",
+    "pretest": "jshint ./src",
+    "test": "echo \"Test Complete\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jordankid93/BLECrazyflie_NodeJS.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jordankid93/BLECrazyflie_NodeJS/issues"
+  },
+  "homepage": "https://github.com/jordankid93/BLECrazyflie_NodeJS",
+  "dependencies": {
+    "bufferpack": "0.0.6",
+    "noble": "^0.3.14"
+  },
+  "devDependencies": {
+    "jshint": "^2.7.0"
+  }
+}
