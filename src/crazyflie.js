@@ -46,8 +46,8 @@ function Crazyflie(callback) {
 	// Time Intervals
 	////////////////////////
 
-	this.startInterval;
-	this.stopInterval;
+	this.startInterval = undefined;
+	this.stopInterval = undefined;
 
 
 
@@ -114,6 +114,9 @@ function Crazyflie(callback) {
 					});
 				}
 			});
+		}
+		else {
+			console.log("Searching for Crazyflie..."); // Inform the user what's going on
 		}
 	});
 

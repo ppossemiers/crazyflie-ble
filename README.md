@@ -38,4 +38,4 @@ The callback function should follow the (err, obj) argument structure, passing i
 
 ### Hover [untested]
 
-To run the hover example run `node examples/hover.js` from within the root directory of the package
+To run the hover example run `npm run-script hover` from within the root directory of the package

@@ -4,9 +4,9 @@
   "description": "Module of BLE Node.js Implementation to communicate with Crazyflie",
   "main": "ble_crazyflie.js",
   "scripts": {
-    "start": "node ./src/index.js",
     "pretest": "jshint ./src",
-    "test": "echo \"Test Complete\""
+    "test": "echo \"Test Complete\"",
+    "hover": "node ./examples/hover.js"
   },
   "repository": {
     "type": "git",
