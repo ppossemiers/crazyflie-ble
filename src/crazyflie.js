@@ -1,5 +1,7 @@
 var noble = require('noble');
 var bufferpack = require('bufferpack');
+var protocol = require('./protocol.js');
+var logging = require('./logging.js');
 
 function Crazyflie(callback) {
 // Callback = function(error, crazyflie){ ... };
@@ -140,12 +142,10 @@ function Crazyflie(callback) {
 				movement components to the CrazyFlie. Also sets
 				crazyflie to hover mode if hover arg is true
 	*/
-	this.start = function(hover){
+	this.start = function(){
 		if (this.stopInterval) clearInterval(this.stopInterval);
 
 		_this.sendAll(_this.roll, _this.pitch, _this.yaw, _this.thrust);
-
-		if (hover) this.sendParam(11, 'b', 1); // Will need to be more flexible as firmware changes
 
 		this.startInterval = setInterval(function(){
 			_this.sendAll(_this.roll, _this.pitch, _this.yaw, _this.thrust);
