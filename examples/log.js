@@ -6,8 +6,6 @@ var log = function(err, cf) {
 		console.log("Could not connect to Crazyflie");
 		process.exit(0);
 	}
-
-	console.log(Protocol.channels.LOGDATA);
 };
 
 cfble.Crazyflie(log);
